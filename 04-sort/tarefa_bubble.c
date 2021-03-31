@@ -1,5 +1,5 @@
 /*
-Codificar, dentro da biblioteca ordenacao.cpp, a função:
+Codificar, dentro da biblioteca ordenacao.c, a função:
 
 void bubblesort(int vet[], int n);
 
