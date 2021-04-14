@@ -42,7 +42,7 @@ void selectionsort(int vet[], int n)
 
 void insertionsort(int vet[], int n)
 {
-    for (int i = 1; i < n; ++i)
+    for (int i = 1; i < n; i++)
     {
         int aux = vet[i];
         int j = i - 1;
