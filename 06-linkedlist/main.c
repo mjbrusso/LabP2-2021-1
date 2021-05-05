@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "linkedlist.c"
 
 int main() {
@@ -9,14 +10,17 @@ int main() {
   list_push_front(nomes, "Joaquim");
   list_push_front(nomes, "Alberto");
 
-  list_remove(nomes, "Joaquim"); // operação atualizadora
-
-  if (list_search(nomes, "Pedro")) { // operação consultora
-    printf("Achou Pedro na lista\n");
-  }
-
-  printf("A lista possui %d valores\n",
+  printf("A lista possui %lu valores\n",
          list_size(nomes)); // operação consultora
+
   list_show(nomes);         // operação consultora
-  list_destroy(nomes);      // operação destrutora
+
+  //   list_remove(nomes, "Joaquim"); // operação atualizadora
+
+  //   if (list_search(nomes, "Pedro")) { // operação consultora
+  //     printf("Achou Pedro na lista\n");
+  //   }
+
+
+  //   list_destroy(nomes);      // operação destrutora
 }
