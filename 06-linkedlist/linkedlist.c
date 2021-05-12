@@ -35,15 +35,6 @@ void list_push_front(LIST *l, char *value) {
 
 size_t list_size(LIST *l) { return l->size; }
 
-void list_show(LIST *l) {
-  node *p = l->first;
-
-  while (p != NULL) {
-    printf("%s\n", p->value);
-    p = p->next;
-  }
-}
-
 // Pesquisa pelo valor na lista encadeada
 // Retorna 1 se encontrou, 0 se não encontrou
 int list_search(LIST *l, char *value) {
@@ -90,4 +81,18 @@ void list_destroy(LIST *l) {
   }
 
   free(l);
+}
+
+void list_foreach(LIST *l, void (*fn)(char *)){
+    node* p = l->first;
+    while(p!=NULL){
+        fn(p->value);
+        p = p->next;
+    }
+}
+
+// TODO:
+// Insere o valor ordenado na lista (ordem alfabética ascendente)
+void list_sorted_insert(LIST *l, char *value){
+
 }
