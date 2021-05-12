@@ -1,5 +1,5 @@
+#include "linkedlist.h"
 #include <stdio.h>
-#include "linkedlist.c"
 
 int main() {
   LIST *nomes;
@@ -13,14 +13,15 @@ int main() {
   printf("A lista possui %lu valores\n",
          list_size(nomes)); // operação consultora
 
-  list_show(nomes);         // operação consultora
+  printf("Antes do remove\n");
+  list_show(nomes); // operação consultora
 
-  //   list_remove(nomes, "Joaquim"); // operação atualizadora
+  list_remove(nomes, "Paula"); // operação atualizadora
 
-  //   if (list_search(nomes, "Pedro")) { // operação consultora
-  //     printf("Achou Pedro na lista\n");
-  //   }
+  printf("Depois do remove\n");
+  list_show(nomes); // operação consultora
 
+  printf("%schou na lista\n", list_search(nomes, "Joaquim") ? "A" : "Não a");
 
-  //   list_destroy(nomes);      // operação destrutora
+  list_destroy(nomes); // operação destrutora
 }
