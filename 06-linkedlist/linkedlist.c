@@ -1,7 +1,7 @@
+#include "linkedlist.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "linkedlist.h"
 
 #define VALUE_SIZE 100
 
@@ -83,16 +83,30 @@ void list_destroy(LIST *l) {
   free(l);
 }
 
-void list_foreach(LIST *l, void (*fn)(char *)){
-    node* p = l->first;
-    while(p!=NULL){
-        fn(p->value);
-        p = p->next;
-    }
+void list_foreach(LIST *l, void (*fn)(char *)) {
+  node *p = l->first;
+  while (p != NULL) {
+    fn(p->value);
+    p = p->next;
+  }
 }
 
-// TODO:
 // Insere o valor ordenado na lista (ordem alfabética ascendente)
-void list_sorted_insert(LIST *l, char *value){
+void list_sorted_insert(LIST *l, char *value) {
+  if (l->first == NULL || strcmp(l->first->value, value) >= 0) {
+    list_push_front(l, value);
+    return;
+  }
 
+  node *p = l->first, *ant = NULL;
+  while (p != NULL && strcmp(p->value, value) < 0) {
+    ant = p;
+    p = p->next;
+  }
+
+  node *novo = malloc(sizeof(node));
+  strcpy(novo->value, value);
+  novo->next = p;
+  ant->next = novo;
+  l->size++;
 }
