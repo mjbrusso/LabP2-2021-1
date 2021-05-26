@@ -2,6 +2,8 @@
 #include <ctype.h>
 #include <stdio.h>
 
+void show_word(char *s) { printf("%s\n", s); }
+
 int main(int argc, char **argv) {
   if (argc != 2) {
     fprintf(stderr, "%s: Invalid arguments\n", argv[0]);
@@ -14,6 +16,7 @@ int main(int argc, char **argv) {
   }
   int ch, i = 0;
   char word[100];
+  LIST *wordlist = list_create();
 
   while ((ch = tolower(fgetc(in))) != EOF) {
     if (isalpha(ch)) {
@@ -21,10 +24,16 @@ int main(int argc, char **argv) {
     } else if (i > 0) {
       word[i] = '\0';
       i = 0;
-      printf("%s\n", word);
+      if (list_search(wordlist, word) == 0)
+        list_sorted_insert(wordlist, word);
     }
   }
   fclose(in);
+
+  printf("%ld words(s) found\n", list_size(wordlist));
+  list_foreach(wordlist, show_word);
+
+  list_destroy(wordlist);
 
   return 0;
 }
