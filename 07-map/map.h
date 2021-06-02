@@ -8,4 +8,5 @@ size_t map_size(MAP *l);
 int map_search(MAP *m, char *key, int *value);
 int map_remove(MAP *l, char *value);
 void map_foreach(MAP *l, void (*fn)(char *, int));
+int map_setvalue(MAP *m, char *key, int value);
 void map_destroy(MAP *l);

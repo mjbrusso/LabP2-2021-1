@@ -112,3 +112,15 @@ void map_insert(MAP *m, char *key, int value) {
   ant->next = novo;
   m->size++;
 }
+
+int map_setvalue(MAP *m, char *key, int value) {
+  mapnode *p = m->first;
+  while (p != NULL) {
+    if (strcmp(p->key, key) == 0) {
+      p->value = value;
+      return 1;
+    }
+    p = p->next;
+  }
+  return 0;
+}

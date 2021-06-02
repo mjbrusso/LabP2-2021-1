@@ -2,7 +2,11 @@
 #include <ctype.h>
 #include <stdio.h>
 
-void show_word(char *s, int n) { printf("%s: %d\n", s, n); }
+FILE* csv;
+
+void exportline(char *s, int n) {
+     fprintf(csv, "%s,%d\n", s, n); 
+}
 
 int main(int argc, char **argv) {
   if (argc != 2) {
@@ -16,7 +20,7 @@ int main(int argc, char **argv) {
     return 2;
   }
 
-  int ch, i = 0;
+  int ch, i = 0, n;
   char word[100];
   MAP *wordlist = map_create();
 
@@ -26,14 +30,21 @@ int main(int argc, char **argv) {
     } else if (i > 0) {
       word[i] = '\0';
       i = 0;
-      // TODO
-      
+      if(map_search(wordlist, word, &n)){
+          map_setvalue(wordlist, word, n + 1);
+      }
+      else{
+          map_insert(wordlist, word, 1);
+      }
     }
   }
   fclose(in);
 
   printf("%ld words(s) found\n", map_size(wordlist));
-  map_foreach(wordlist, show_word);
+
+  csv = fopen("words.csv", "w");
+  map_foreach(wordlist, exportline);
+  fclose(csv);
 
   map_destroy(wordlist);
 
