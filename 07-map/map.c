@@ -6,7 +6,8 @@
 #define VALUE_SIZE 100
 
 typedef struct mapnode {
-  char value[VALUE_SIZE];
+  char key[VALUE_SIZE];
+  int value;
   struct mapnode *next;
 } mapnode;
 
@@ -24,23 +25,13 @@ MAP *map_create() {
   return new_map;
 }
 
-void map_push_front(MAP *l, char *value) {
-  mapnode *new_mapnode = malloc(sizeof(mapnode));
-  strcpy(new_mapnode->value, value);
-  new_mapnode->next = l->first;
+size_t map_size(MAP *m) { return m->size; }
 
-  l->first = new_mapnode;
-  l->size++;
-}
-
-size_t map_size(MAP *l) { return l->size; }
-
-// Pesquisa pelo valor na mapa encadeada
-// Retorna 1 se encontrou, 0 se não encontrou
-int map_search(MAP *l, char *value) {
-  mapnode *p = l->first;
+int map_search(MAP *m, char *key, int *value) {
+  mapnode *p = m->first;
   while (p != NULL) {
-    if (strcmp(p->value, value) == 0) {
+    if (strcmp(p->key, key) == 0) {
+      *value = p->value;
       return 1;
     }
     p = p->next;
@@ -48,20 +39,20 @@ int map_search(MAP *l, char *value) {
   return 0;
 }
 
-// Remove da mapa o nodo que contêm o valor
+// Remove da mapa o nodo que contêm a chave
 // Retorna 1 se encontrou, 0 se não encontrou
-int map_remove(MAP *l, char *value) {
-  mapnode *p = l->first;
+int map_remove(MAP *m, char *key) {
+  mapnode *p = m->first;
   mapnode *ant = NULL;
   while (p != NULL) {
-    if (strcmp(p->value, value) == 0) {
+    if (strcmp(p->key, key) == 0) {
       if (ant == NULL)
-        l->first = p->next;
+        m->first = p->next;
       else
         ant->next = p->next;
 
       free(p);
-      l->size--;
+      m->size--;
       return 1;
     }
     ant = p;
@@ -71,8 +62,8 @@ int map_remove(MAP *l, char *value) {
 }
 
 // Operação destrutora
-void map_destroy(MAP *l) {
-  mapnode *p = l->first, *aux;
+void map_destroy(MAP *m) {
+  mapnode *p = m->first, *aux;
 
   while (p != NULL) {
     aux = p->next;
@@ -80,33 +71,44 @@ void map_destroy(MAP *l) {
     p = aux;
   }
 
-  free(l);
+  free(m);
 }
 
-void map_foreach(MAP *l, void (*fn)(char *)) {
-  mapnode *p = l->first;
-  while (p != NULL) {
-    fn(p->value);
-    p = p->next;
-  }
+// void map_foreach(MAP *l, void (*fn)(char *)) {
+//   mapnode *p = l->first;
+//   while (p != NULL) {
+//     fn(p->value);
+//     p = p->next;
+//   }
+// }
+
+void map_push_front(MAP *m, char *key, int value) {
+  mapnode *new_mapnode = malloc(sizeof(mapnode));
+  strcpy(new_mapnode->key, key);
+  new_mapnode->value = value;
+  new_mapnode->next = m->first;
+
+  m->first = new_mapnode;
+  m->size++;
 }
 
 // Insere o valor ordenado na mapa (ordem alfabética ascendente)
-void map_insert(MAP *l, char *value) {
-  if (l->first == NULL || strcmp(l->first->value, value) >= 0) {
-    map_push_front(l, value);
+void map_insert(MAP *m, char *key, int value) {
+  if (m->first == NULL || strcmp(m->first->key, key) >= 0) {
+    map_push_front(m, key, value);
     return;
   }
 
-  mapnode *p = l->first, *ant = NULL;
-  while (p != NULL && strcmp(p->value, value) < 0) {
+  mapnode *p = m->first, *ant = NULL;
+  while (p != NULL && strcmp(p->key, key) < 0) {
     ant = p;
     p = p->next;
   }
 
   mapnode *novo = malloc(sizeof(mapnode));
-  strcpy(novo->value, value);
+  strcpy(novo->key, key);
+  novo->value = value;
   novo->next = p;
   ant->next = novo;
-  l->size++;
+  m->size++;
 }
