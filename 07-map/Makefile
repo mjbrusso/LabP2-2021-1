@@ -2,18 +2,17 @@ CC=gcc
 CFLAGS=-O2 -Wall
  
 # compila tudo
-all: map.o testamap.o testamap
+all: map.o testamap words
 
 # regra para compilar a map
 map.o: map.c
 	$(CC) $(CFLAGS) -c map.c
 
-# regra para compilar a testamap
-testamap.o: testamap.c map.h
-	$(CC) $(CFLAGS)  -c testamap.c
+testamap:  map.o testamap.c
+	$(CC) $(CFLAGS) testamap.c map.o -o testamap
 
-testamap:  map.o testamap.o
-	$(CC) $(CFLAGS) testamap.o map.o -o testamap
+words: words.c map.o
+	$(CC) $(CFLAGS) words.c map.o -o words
 
 # limpa tudo que foi criado
 clean:
