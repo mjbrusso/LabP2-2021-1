@@ -74,13 +74,13 @@ void map_destroy(MAP *m) {
   free(m);
 }
 
-// void map_foreach(MAP *l, void (*fn)(char *)) {
-//   mapnode *p = l->first;
-//   while (p != NULL) {
-//     fn(p->value);
-//     p = p->next;
-//   }
-// }
+void map_foreach(MAP *m, void (*fn)(char *, int)) {
+  mapnode *p = m->first;
+  while (p != NULL) {
+    fn(p->key, p->value);
+    p = p->next;
+  }
+}
 
 void map_push_front(MAP *m, char *key, int value) {
   mapnode *new_mapnode = malloc(sizeof(mapnode));
