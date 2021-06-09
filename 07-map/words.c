@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-FILE *csv;
-
 int cmp(const void *a, const void *b)
 {
     MAP_ITERATOR *p1 = (MAP_ITERATOR *)a,
@@ -12,11 +10,6 @@ int cmp(const void *a, const void *b)
 
     int diff = map_value_at(*p2) - map_value_at(*p1);
     return diff != 0 ? diff : strcmp(map_key_at(*p1), map_key_at(*p2));
-}
-
-void exportline(char *s, int n)
-{
-    fprintf(csv, "%s,%d\n", s, n);
 }
 
 int main(int argc, char **argv)
@@ -55,8 +48,7 @@ int main(int argc, char **argv)
     printf("%ld words(s) found\n", nwords);
 
     MAP_ITERATOR *vio = map_get_iterators(wordlist);
-    csv = fopen("words.csv", "w");
-    //map_foreach(wordlist, exportline);
+	FILE *csv = fopen("words.csv", "w");
 
     qsort(vio, nwords, sizeof(MAP_ITERATOR), cmp);
     for (int i = 0; i < nwords; i++) {
