@@ -16,4 +16,4 @@ words: words.c map.o
 
 # limpa tudo que foi criado
 clean:
-	rm -f *.o testamap
+	rm -f *.o testamap *.csv
