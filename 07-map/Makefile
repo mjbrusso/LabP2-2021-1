@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-O2 -Wall
  
 # compila tudo
-all: map.o testamap words
+all: map.o words
 
 # regra para compilar a map
 map.o: map.c
